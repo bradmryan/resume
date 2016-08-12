@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block body %}
+<ul>
+  <a href="{% url 'resume-list' %}"><li>List</li></a>
+</ul>
+<h2>{{ object.firstname }} {{ object.middleinitial}} {{ object.lastname}}</h2>
+<form action="{% url 'resume-update' object.pk %}" method="post">{% csrf_token %}
+  <input type="submit" value="Update" />
+  {{ form|crispy }}
+</form>
+
+<h2>Social Media</h2>
+
+  <a href="{% url 'profile-create' object.pk %}"><p>Add a Social Media Profile</p></a>
+  {% for profile in profiles %}
+    <h4>{{ profile.get_network_display }} - <a href="{% url 'profile-update' profile.pk %}">View</a></h4>
+    <a target="_blank" href="{{ profile.url }}"><p>{{ profile.username }}</p></a>
+  {% endfor %}
+
+<h2>Work Experience</h2>
+
+  <a href="{% url 'work-create' object.pk %}"><p>Add Work Experience</p></a>
+  {% for job in work %}
+    <h4>{{ job.position }} - <a href="{% url 'work-update' job.pk %}">View</a></h4>
+    <a target="_blank" href="{{ job.website }}"><p>{{ job.company }}</p></a>
+  {% endfor %}
+
+<h2>Education</h2>
+
+  <a href="{% url 'education-create' object.pk %}"><p>Add Education</p></a>
+  {% for term in education %}
+    <h4>{{ term.institution }} - <a href="{% url 'education-update' term.pk %}">View</a></h4>
+    <p>{{ term.studytype }} in the field of {{ term.area }}</p>
+  {% endfor %}
+
+
+
+{% endblock %}

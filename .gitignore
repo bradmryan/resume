@@ -1,0 +1,5 @@
+images/
+__pycache__
+media/
+resume/settings.py
+*.pyc

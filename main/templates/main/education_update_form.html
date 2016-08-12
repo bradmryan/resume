@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block body %}
+<ul>
+  <a href="{% url 'resume-list' %}"><li>List</li></a>
+</ul>
+<h2>Update {{ object.name }}</h2>
+<form action="{% url 'education-update' object.pk %}" method="post">{% csrf_token %}
+  <input type="submit" value="Update" />
+  {{ form|crispy }}
+</form>
+
+
+{% endblock %}

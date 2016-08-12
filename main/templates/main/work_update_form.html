@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block body %}
+<ul>
+  <a href="{% url 'resume-list' %}"><li>List</li></a>
+</ul>
+<h2>Update {{ object.name }}</h2>
+<form action="{% url 'work-update' object.pk %}" method="post">{% csrf_token %}
+  <input type="submit" value="Update" />
+  {{ form|crispy }}
+</form>
+
+<h3>Highlights</h3>
+<a href="{% url 'workhighlight-create' object.pk %}">Add Highlight</a>
+{% for highlight in workhighlights %}
+  <ul>
+    <li>{{ highlight.highlight }} - <a href="{% url 'workhighlight-delete' highlight.pk %}">Delete</a></li>
+  </ul>
+{% endfor %}
+
+{% endblock %}
