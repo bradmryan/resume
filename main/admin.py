@@ -1,10 +1,15 @@
 from django.contrib import admin
-from .models import Resume, Profile, Work
+from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication
 
 REGISTER_MODELS = [
     Resume,
     Profile,
-    Work
+    Work,
+    WorkHighlight,
+    Education,
+    Course,
+    Award,
+    Publication
 ]
 
 # Register your models here.

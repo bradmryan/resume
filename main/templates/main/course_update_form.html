@@ -12,12 +12,4 @@
   {{ form|crispy }}
 </form>
 
-<h3>Courses</h3>
-
-<a href="{% url 'course-create' object.pk %}">Add Course</a>
-
-{% for course in courses %}
-  <p>{{ course.coursecode }} - {{ course.description }} - <a href="{% url 'course-update' course.pk %}">Edit</a></p>
-{% endfor %}
-
 {% endblock %}

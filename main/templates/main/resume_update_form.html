@@ -36,6 +36,18 @@
     <p>{{ term.studytype }} in the field of {{ term.area }}</p>
   {% endfor %}
 
+<h2>Awards</h2>
 
+  <a href="{% url 'award-create' object.pk %}"><p>Add Award</p></a>
+  {% for award in awards %}
+    <h4>{{ award.title }} - <a href="{% url 'award-update' award.pk %}">View</a></h4>
+  {% endfor %}
+
+<h2>Publications</h2>
+
+  <a href="{% url 'publication-create' object.pk %}"><p>Add Publication</p></a>
+  {% for publication in publications %}
+    <h4>{{ publication.name }} - <a href="{% url 'publication-update' publication.pk %}">View</a></h4>
+  {% endfor %}
 
 {% endblock %}

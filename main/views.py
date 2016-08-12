@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .models import Resume, Profile, Work, WorkHighlight, Education
+from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication
 
 
 # Create your views here.
@@ -32,6 +32,8 @@ class ResumeUpdate(UpdateView):
         context['profiles'] = Profile.objects.filter(resume=resume_pk)
         context['work'] = Work.objects.filter(resume=resume_pk)
         context['education'] = Education.objects.filter(resume=resume_pk)
+        context['awards'] = Award.objects.filter(resume=resume_pk)
+        context['publications'] = Publication.objects.filter(resume=resume_pk)
         return context
 
 
@@ -135,6 +137,92 @@ class EducationUpdate(UpdateView):
     model = Education
     fields = ['institution', 'area', 'studytype', 'startDate', 'endDate', 'gpa']
     template_name_suffix = '_update_form'
+
+    def get_context_data(self, **kwargs):
+        context = super(EducationUpdate, self).get_context_data(**kwargs)
+        edu_pk = self.kwargs.get('pk')
+        context['courses'] = Course.objects.filter(education=edu_pk)
+        return context
+
+
+class CourseCreate(CreateView):
+    model = Course
+
+    fields = ['coursecode', 'description']
+
+    def get_education(self):
+        return get_object_or_404(Education, pk=self.kwargs.get('edu_pk'))
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseCreate, self).get_context_data(**kwargs)
+        context['education'] = self.get_education()
+        return context
+
+    def form_valid(self, form):
+        form.instance.education = self.get_education()
+        return super(CourseCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('education-update', kwargs={'pk':self.kwargs.get('edu_pk')})
+
+
+class CourseUpdate(UpdateView):
+    model = Course
+
+    fields = ['coursecode', 'description']
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        context = self.get_context_data()
+        highlight = context['object']
+        return reverse('education-update', kwargs={'pk':course.education.pk})
+
+
+class AwardCreate(CreateView):
+    model = Award
+    fields = ['title', 'date', 'awarder', 'summary']
+
+    def get_resume(self):
+        return get_object_or_404(Resume, pk=self.kwargs.get('resume_pk'))
+
+    def get_context_data(self, **kwargs):
+        context = super(AwardCreate, self).get_context_data(**kwargs)
+        context['resume'] = self.get_resume()
+        return context
+
+    def form_valid(self, form):
+        form.instance.resume = self.get_resume()
+        return super(AwardCreate, self).form_valid(form)
+
+
+class AwardUpdate(UpdateView):
+    model = Award
+    fields = ['title', 'date', 'awarder', 'summary']
+    template_name_suffix = '_update_form'
+
+
+class PublicationCreate(CreateView):
+    model = Publication
+    fields = ['name', 'publisher', 'releasedate', 'website', 'summary']
+
+    def get_resume(self):
+        return get_object_or_404(Resume, pk=self.kwargs.get('resume_pk'))
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicationCreate, self).get_context_data(**kwargs)
+        context['resume'] = self.get_resume()
+        return context
+
+    def form_valid(self, form):
+        form.instance.resume = self.get_resume()
+        return super(PublicationCreate, self).form_valid(form)
+
+
+class PublicationUpdate(UpdateView):
+    model = Publication
+    fields = ['name', 'publisher', 'releasedate', 'website', 'summary']
+    template_name_suffix = '_update_form'
+
 
 def get_all_json(req):
     resumes = Resume.objects.all()

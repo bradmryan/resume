@@ -75,8 +75,8 @@ class Education(models.Model):
     institution = models.CharField(max_length=150)
     area = models.CharField(max_length=100)
     studytype = models.CharField(max_length=50)
-    startDate = models.DateField()
-    endDate = models.DateField()
+    startdate = models.DateField()
+    enddate = models.DateField()
     gpa = models.CharField(max_length=3)
 
     def get_absolute_url(self):
@@ -97,16 +97,20 @@ class Award(models.Model):
     awarder = models.CharField(max_length=100)
     summary = models.TextField()
 
+    def get_absolute_url(self):
+        return reverse('award-update', kwargs={'pk': self.pk})
 
 class Publication(models.Model):
     resume = models.ForeignKey(Resume)
 
     name = models.CharField(max_length=150)
     publisher = models.CharField(max_length=150)
-    releaseDate = models.DateField()
+    releasedate = models.DateField()
     website = models.URLField()
     summary = models.TextField()
 
+    def get_absolute_url(self):
+        return reverse('publication-update', kwargs={'pk': self.pk})
 
 class Skill(models.Model):
     resume = models.ForeignKey(Resume)
