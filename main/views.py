@@ -4,226 +4,10 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication
+from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, Keyword, SkillKeyword, InterestKeyword
 
 
 # Create your views here.
-class ResumeList(ListView):
-    model = Resume
-
-
-class ResumeDetail(DetailView):
-    model = Resume
-
-
-class ResumeCreate(CreateView):
-    model = Resume
-    fields = '__all__'
-
-
-class ResumeUpdate(UpdateView):
-    model = Resume
-    fields = '__all__'
-    template_name_suffix = '_update_form'
-
-    def get_context_data(self, **kwargs):
-        context = super(ResumeUpdate, self).get_context_data(**kwargs)
-        resume_pk = self.kwargs.get('pk')
-        context['profiles'] = Profile.objects.filter(resume=resume_pk)
-        context['work'] = Work.objects.filter(resume=resume_pk)
-        context['education'] = Education.objects.filter(resume=resume_pk)
-        context['awards'] = Award.objects.filter(resume=resume_pk)
-        context['publications'] = Publication.objects.filter(resume=resume_pk)
-        return context
-
-
-class ProfileCreate(CreateView):
-    model = Profile
-    fields = ['network', 'username', 'url']
-
-    def get_resume(self):
-        return get_object_or_404(Resume, pk=self.kwargs.get('resume_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super(ProfileCreate, self).get_context_data(**kwargs)
-        context['resume'] = self.get_resume()
-        return context
-
-    def form_valid(self, form):
-        form.instance.resume = self.get_resume()
-        return super(ProfileCreate, self).form_valid(form)
-
-
-class ProfileUpdate(UpdateView):
-    model = Profile
-    fields = ['network', 'username', 'url']
-    template_name_suffix = '_update_form'
-
-
-class WorkCreate(CreateView):
-    model = Work
-    fields = ['volunteer', 'company', 'position', 'website', 'startdate', 'enddate', 'summary']
-
-    def get_resume(self):
-        return get_object_or_404(Resume, pk=self.kwargs.get('resume_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super(WorkCreate, self).get_context_data(**kwargs)
-        context['resume'] = self.get_resume()
-        return context
-
-    def form_valid(self, form):
-        form.instance.resume = self.get_resume()
-        return super(WorkCreate, self).form_valid(form)
-
-
-class WorkUpdate(UpdateView):
-    model = Work
-    fields = ['volunteer', 'company', 'position', 'website', 'startdate', 'enddate', 'summary']
-    template_name_suffix = '_update_form'
-
-    def get_context_data(self, **kwargs):
-        context = super(WorkUpdate, self).get_context_data(**kwargs)
-        work_pk = self.kwargs.get('pk')
-        context['workhighlights'] = WorkHighlight.objects.filter(work=work_pk)
-        return context
-
-class WorkHighlightCreate(CreateView):
-    model = WorkHighlight
-
-    fields = ['highlight']
-
-    def get_work(self):
-        return get_object_or_404(Work, pk=self.kwargs.get('work_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super(WorkHighlightCreate, self).get_context_data(**kwargs)
-        context['work'] = self.get_work()
-        return context
-
-    def form_valid(self, form):
-        form.instance.work = self.get_work()
-        return super(WorkHighlightCreate, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('work-update', kwargs={'pk':self.kwargs.get('work_pk')})
-
-
-class WorkHighlightDelete(DeleteView):
-    model = WorkHighlight
-
-    def get_success_url(self):
-        context = self.get_context_data()
-        highlight = context['object']
-        return reverse('work-update', kwargs={'pk':highlight.work.pk})
-
-class EducationCreate(CreateView):
-    model = Education
-    fields = ['institution', 'area', 'studytype', 'startDate', 'endDate', 'gpa']
-
-    def get_resume(self):
-        return get_object_or_404(Resume, pk=self.kwargs.get('resume_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super(EducationCreate, self).get_context_data(**kwargs)
-        context['resume'] = self.get_resume()
-        return context
-
-    def form_valid(self, form):
-        form.instance.resume = self.get_resume()
-        return super(EducationCreate, self).form_valid(form)
-
-class EducationUpdate(UpdateView):
-    model = Education
-    fields = ['institution', 'area', 'studytype', 'startDate', 'endDate', 'gpa']
-    template_name_suffix = '_update_form'
-
-    def get_context_data(self, **kwargs):
-        context = super(EducationUpdate, self).get_context_data(**kwargs)
-        edu_pk = self.kwargs.get('pk')
-        context['courses'] = Course.objects.filter(education=edu_pk)
-        return context
-
-
-class CourseCreate(CreateView):
-    model = Course
-
-    fields = ['coursecode', 'description']
-
-    def get_education(self):
-        return get_object_or_404(Education, pk=self.kwargs.get('edu_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super(CourseCreate, self).get_context_data(**kwargs)
-        context['education'] = self.get_education()
-        return context
-
-    def form_valid(self, form):
-        form.instance.education = self.get_education()
-        return super(CourseCreate, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('education-update', kwargs={'pk':self.kwargs.get('edu_pk')})
-
-
-class CourseUpdate(UpdateView):
-    model = Course
-
-    fields = ['coursecode', 'description']
-    template_name_suffix = '_update_form'
-
-    def get_success_url(self):
-        context = self.get_context_data()
-        highlight = context['object']
-        return reverse('education-update', kwargs={'pk':course.education.pk})
-
-
-class AwardCreate(CreateView):
-    model = Award
-    fields = ['title', 'date', 'awarder', 'summary']
-
-    def get_resume(self):
-        return get_object_or_404(Resume, pk=self.kwargs.get('resume_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super(AwardCreate, self).get_context_data(**kwargs)
-        context['resume'] = self.get_resume()
-        return context
-
-    def form_valid(self, form):
-        form.instance.resume = self.get_resume()
-        return super(AwardCreate, self).form_valid(form)
-
-
-class AwardUpdate(UpdateView):
-    model = Award
-    fields = ['title', 'date', 'awarder', 'summary']
-    template_name_suffix = '_update_form'
-
-
-class PublicationCreate(CreateView):
-    model = Publication
-    fields = ['name', 'publisher', 'releasedate', 'website', 'summary']
-
-    def get_resume(self):
-        return get_object_or_404(Resume, pk=self.kwargs.get('resume_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super(PublicationCreate, self).get_context_data(**kwargs)
-        context['resume'] = self.get_resume()
-        return context
-
-    def form_valid(self, form):
-        form.instance.resume = self.get_resume()
-        return super(PublicationCreate, self).form_valid(form)
-
-
-class PublicationUpdate(UpdateView):
-    model = Publication
-    fields = ['name', 'publisher', 'releasedate', 'website', 'summary']
-    template_name_suffix = '_update_form'
-
-
 def get_all_json(req):
     resumes = Resume.objects.all()
 
@@ -231,11 +15,122 @@ def get_all_json(req):
     resumes_rec = []
 
     for resume in resumes:
-        name = ' '.join([resume.firstname, resume.middleinitial, resume.lastname])
-        record = { "name": name.title(), "summary": resume.summary }
+        resume_dict = {}
+        profile_rec = []
+        work_rec = []
+        volunteer_rec = []
+        education_rec = []
+        award_rec = []
+        publication_rec = []
+        skill_rec = []
+        language_rec = []
+        interest_rec = []
+        reference_rec = []
 
-        resumes_rec.append(record)
+        profiles = Profile.objects.filter(resume=resume)
+        works = Work.objects.filter(resume=resume)
+        education = Education.objects.filter(resume=resume)
+        awards = Award.objects.filter(resume=resume)
+        publications = Publication.objects.filter(resume=resume)
+        skills = Skill.objects.filter(resume=resume)
+        languages = Language.objects.filter(resume=resume)
+        interests = Interest.objects.filter(resume=resume)
+        references = Reference.objects.filter(resume=resume)
+
+        name = ' '.join([resume.firstname, resume.middleinitial, resume.lastname])
+
+        for profile in profiles:
+            network = profile.get_network_display()
+            profile_dict = {"network": network, "username": profile.username, "url": profile.url}
+            profile_rec.append(profile_dict)
+
+        for work in works:
+            highlight_rec = []
+
+            highlights = WorkHighlight.objects.filter(work=work)
+
+            for highlight in highlights:
+                highlight_rec.append(highlight.highlight)
+
+            work_dict = {"position": work.position, "website": work.website, "startDate": work.startdate, "endDate": work.enddate, "summary": work.summary}
+
+            work_dict["highlights"] = highlight_rec
+
+            if work.volunteer:
+                work_dict["organization"] = work.company
+                volunteer_rec.append(work_dict)
+            else:
+                work_dict["company"] = work.company
+                work_rec.append(work_dict)
+
+        for edu in education:
+            course_rec = []
+
+            courses = Course.objects.filter(education=edu)
+
+            for course in courses:
+                record = " - ".join([course.coursecode, course.description ])
+                course_rec.append(record)
+
+            edu_dict = {"institution": edu.institution, "area": edu.area, "studyType": edu.studytype, "startDate": edu.startdate, "endDate": edu.enddate, "gpa": edu.gpa}
+            edu_dict["courses"] = course_rec
+            work_rec.append(edu_dict)
+
+        for award in awards:
+            award_dict = {"title": award.title, "date": award.date, "awarder": award.awarder, "summary": award.summary}
+            award_rec.append(award_dict)
+
+        for publication in publications:
+            publication_dict = {"name": publication.name, "publisher": publication.publisher, "releaseDate": publication.releasedate, "website": publication.website, "summary": publication.summary}
+            publication_rec.append(publication_dict)
+
+        for skill in skills:
+            keyword_rec = []
+
+            keywords = SkillKeyword.objects.filter(skill=skill)
+
+            for keyword in keywords:
+                keyword_rec.append(keyword.keyword)
+
+            skill_dict = {"name": skill.name, "level": skill.level, "keywords": keyword_rec}
+            skill_rec.append(skill_dict)
+
+        for language in languages:
+            language_dict = {"name": language.name, "level": language.level}
+            language_rec.append(language_dict)
+
+        for interest in interests:
+            keyword_rec = []
+
+            keywords = InterestKeyword.objects.filter(interest=interest)
+
+            for keyword in keywords:
+                keyword_rec.append(keyword.keyword)
+
+            interest_dict = {"name": interest.name, "keyword": keyword_rec}
+            interest_rec.append(interest_dict)
+
+        for reference in references:
+            reference_dict = {"name": reference.name, "reference": reference.reference}
+            reference_rec.append(reference_dict)
+
+        resume_dict["basics"] = { "name": name.title(), "label": resume.label, "picture": resume.picture.url, "email": resume.email, "phone": resume.phone, "website": resume.website, "summary": resume.summary }
+        resume_dict["basics"]["location"] = { "address": resume.address, "postalcode": resume.postalcode, "city": resume.city, "countrycode": resume.countrycode, "region": resume.region }
+        resume_dict["basics"]["profiles"] = profile_rec
+        resume_dict["volunteer"] = volunteer_rec
+        resume_dict["work"] = work_rec
+        resume_dict["education"] = work_rec
+        resume_dict["awards"] = award_rec
+        resume_dict["publications"] = publication_rec
+        resume_dict["skills"] = skill_rec
+        resume_dict["language"] = language_rec
+        resume_dict["interests"] = interest_rec
+        resume_dict["references"] = reference_rec
+
+
+        resumes_rec.append(resume_dict)
 
     resumes_dict["Resumes"] = resumes_rec
+
 
     return JsonResponse(resumes_dict)

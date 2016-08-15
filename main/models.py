@@ -21,8 +21,6 @@ class Resume(models.Model):
     def __str__(self):
         return self.email
 
-    def get_absolute_url(self):
-        return reverse('resume-update', kwargs={'pk': self.pk})
 
 class Profile(models.Model):
     resume = models.ForeignKey(Resume)
@@ -40,8 +38,6 @@ class Profile(models.Model):
     username = models.CharField(max_length=150)
     url = models.URLField()
 
-    def get_absolute_url(self):
-        return reverse('profile-update', kwargs={'pk': self.pk})
 
     class Meta:
         unique_together = ('resume', 'network')
@@ -57,8 +53,6 @@ class Work(models.Model):
     enddate = models.DateField()
     summary = models.TextField()
 
-    def get_absolute_url(self):
-        return reverse('work-update', kwargs={'pk': self.pk})
 
 class WorkHighlight(models.Model):
     work = models.ForeignKey(Work)
@@ -79,8 +73,6 @@ class Education(models.Model):
     enddate = models.DateField()
     gpa = models.CharField(max_length=3)
 
-    def get_absolute_url(self):
-        return reverse('education-update', kwargs={'pk': self.pk})
 
 class Course(models.Model):
     education = models.ForeignKey(Education)
@@ -97,8 +89,6 @@ class Award(models.Model):
     awarder = models.CharField(max_length=100)
     summary = models.TextField()
 
-    def get_absolute_url(self):
-        return reverse('award-update', kwargs={'pk': self.pk})
 
 class Publication(models.Model):
     resume = models.ForeignKey(Resume)
@@ -109,8 +99,6 @@ class Publication(models.Model):
     website = models.URLField()
     summary = models.TextField()
 
-    def get_absolute_url(self):
-        return reverse('publication-update', kwargs={'pk': self.pk})
 
 class Skill(models.Model):
     resume = models.ForeignKey(Resume)
@@ -121,6 +109,9 @@ class Skill(models.Model):
 
 class Keyword(models.Model):
     word = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.word
 
 
 class SkillKeyword(models.Model):
@@ -136,6 +127,7 @@ class Language(models.Model):
 
     name = models.CharField(max_length=25)
     level = models.CharField(max_length=25)
+
 
 
 class Interest(models.Model):

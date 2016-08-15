@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication
+from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference
 
 REGISTER_MODELS = [
     Resume,
@@ -9,7 +9,11 @@ REGISTER_MODELS = [
     Education,
     Course,
     Award,
-    Publication
+    Publication,
+    Skill,
+    Language,
+    Interest,
+    Reference,
 ]
 
 # Register your models here.
