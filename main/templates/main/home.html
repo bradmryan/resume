@@ -16,23 +16,30 @@
       <h1>{{ resume.get_full_name }}</h1>
       <h2>{{ resume.label }}</h2>
       <h4> {{ resume.summary }}</h4>
+      <a class="btn btn-default" href="{% url 'get-resume-json' %}" role="button">Get Resume.json</a>
     </div>
   </div>
 </div> <!-- header row -->
 
 <div class="row" id="info-row">
-  <div class="col-md-4" id="left-box">
-    <h2>SKILLS</h2>
-    <span class="glyphicon glyphicon-console"></span>
-  </div>
-  <div class="col-md-4" id="middle-box">
-    <h2>EDUCATION</h2>
-    <span class="glyphicon glyphicon-education"></span>
-  </div>
-  <div class="col-md-4" id="right-box">
-    <h2>SOCIAL MEDIA</h2>
-    <span class="glyphicon glyphicon-user"></span>
-  </div>
+  <a href="#skills-box">
+    <div class="col-md-4" id="left-box">
+      <h2>SKILLS</h2>
+      <span class="glyphicon glyphicon-console"></span>
+    </div>
+  </a>
+  <a href="#edu-box">
+    <div class="col-md-4" id="middle-box">
+      <h2>EDUCATION</h2>
+      <span class="glyphicon glyphicon-education"></span>
+    </div>
+  </a>
+  <a href="#contact-box">
+    <div class="col-md-4" id="right-box">
+      <h2>CONTACT INFO</h2>
+      <span class="glyphicon glyphicon-user"></span>
+    </div>
+  </a>
 </div>
 
 <div class="row" id="skills-box">
@@ -40,15 +47,58 @@
     <div class="col-md-6">
       <h1>SKILLS</h1>
       <h2>Brad Ryan is a computer programmer who codes primarily in Python, and
-        uses the Django framework to build web applications, but is also skill in,
+        uses the Django framework to build web applications, but is also skilled in,
         and has experience with many other technologies like Java, SQL, PHP, AngularsJS,
         NodeJS, and Linux. <h2>
     </div>
-    <div class="col-md-offset-1 col-md-4">
-      <img src="{{ logo.java.image.url }}" >
+    <div class="col-md-offset-1 col-md-5">
+      <div class="row">
+        <div class="col-md-6 logo-image"><img src="{{ logo.python.image.url }}" alt="{{ logo.python.name }}"></div>
+        <div class="col-md-6 logo-image"><img src="{{ logo.django.image.url }}" alt="{{ logo.django.name }}"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 logo-image"><img src="{{ logo.java.image.url }}" alt="{{ logo.java.name }}"></div>
+        <div class="col-md-4 logo-image"><img src="{{ logo.html5.image.url }}" alt="{{ logo.html5.name }}"></div>
+        <div class="col-md-4 logo-image"><img src="{{ logo.javascript.image.url }}" alt="{{ logo.javascript.name }}"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 logo-image"><img src="{{ logo.android.image.url }}" alt="{{ logo.android.name }}"></div>
+        <div class="col-md-6 logo-image"><img src="{{ logo.angularjs.image.url }}" alt="{{ logo.angularjs.name }}"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 logo-image"><img src="{{ logo.nodejs.image.url }}" alt="{{ logo.nodejs.name }}"></div>
+        <div class="col-md-4 logo-image"><img src="{{ logo.linux.image.url }}" alt="{{ logo.linux.name }}"></div>
+        <div class="col-md-4 logo-image"><img src="{{ logo.php.image.url }}" alt="{{ logo.php.name }}"></div>
+      </div>
     </div>
   </div>
 </div>
 
+<div class="row" id="edu-box">
+  <div class="container">
+    <div class="col-md-5" id="edu-logo">
+      <img src="{{ logo.lambtoncollege.image.url }}" alt="{{ logo.lambtoncollege.name }}">
+    </div>
+    <div class="col-md-offset-2 col-md-5">
+      <h1>EDUCATION</h1>
+      <h2>Brad Ryan graduated in 2016 from the Computer Programmer course offered by
+        Lambton College. Topics focused on by the course included: JAVA, PHP, C#,
+        SQL, web technologies, business mathematics, software design, mobile development,
+        and web security.</h2>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="contact-box">
+  <div class="col-md-offset-4 col-sm-offset-3">
+    <h1>CONTACT</h1>
+    <h2>Email: <a href="mailto:brad.m.ryan@gmail.com" target="_top">Brad.M.Ryan@gmail.com</a></h2>
+    <h2>Phone: <a href="tel:226-776-6391">(226) 776-6391</a></h2>
+    <h2>Social Media</h2>
+    <ul>
+      <li><a href="https://ca.linkedin.com/in/bradmryan"><h3>Linkedin</h3></a></li>
+      <li><a href="https://twitter.com/BradMRyan"><h3>Twitter</h3></a></li>
+    </ul>
+</div>
 
 {% endblock %}

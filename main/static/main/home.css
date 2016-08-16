@@ -26,6 +26,10 @@ h1, h2, h3, h4 {
   text-align: center;
 }
 
+#info-row a {
+  color: black;
+}
+
 #left-box {
   background-color: #F0C05B;
   padding: 20px 0 25px 0;
@@ -43,7 +47,44 @@ h1, h2, h3, h4 {
 
 #skills-box {
   background-color: black;
-  height: 700px;
   color: white;
-  padding: 50px 0 25px 0;
+  padding: 150px 0 200px 0;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.logo-image {
+  height: 100px;
+  padding-top: 20px;
+}
+
+.logo-image img {
+  max-height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#edu-box {
+  padding: 150px 0 150px 0;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+#edu-logo {
+  height: 100px;
+  padding-top: 20px;
+}
+
+#edu-logo img {
+  max-height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#contact-box {
+  background-color: black;
+  padding: 150px 0 150px 0;
+  color:white;
 }
