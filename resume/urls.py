@@ -23,5 +23,6 @@ from main import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', views.home, name="home"),
     url(r'^all/resume.json', views.get_all_json, name="get-all-json"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

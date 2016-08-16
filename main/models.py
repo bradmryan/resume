@@ -21,6 +21,9 @@ class Resume(models.Model):
     def __str__(self):
         return self.email
 
+    def get_full_name(self):
+        return ' '.join([self.firstname, self.middleinitial, self.lastname]).title()
+
 
 class Profile(models.Model):
     resume = models.ForeignKey(Resume)
@@ -149,3 +152,12 @@ class Reference(models.Model):
 
     name = models.CharField(max_length=150)
     reference = models.CharField(max_length=255)
+
+class LogoImage(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    image = models.ImageField(upload_to='images/logos/', max_length=50)
+    alt_image = models.ImageField(upload_to='images/logos/', max_length=50, null=True, blank=True)
+    attribution = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name

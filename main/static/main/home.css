@@ -1,0 +1,49 @@
+@import 'https://fonts.googleapis.com/css?family=Montserrat|Open+Sans';
+
+:root {
+  --blue: #92A8D2;
+  --yellow: #F0C05B;
+  --green: #45B5AB;
+  --red: #D94F71;
+}
+
+html, body {margin:0;padding:0;height:100%;}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+#banner {
+  padding: 175px 0 250px 0;
+  background-color: #92A8D2;
+}
+
+#info-row {
+  text-align: center;
+}
+
+#left-box {
+  background-color: #F0C05B;
+  padding: 20px 0 25px 0;
+}
+
+#middle-box {
+  background-color: #45B5AB;
+  padding: 20px 0 25px 0;
+}
+
+#right-box {
+  background-color: #D94F71;
+  padding: 20px 0 25px 0;
+}
+
+#skills-box {
+  background-color: black;
+  height: 700px;
+  color: white;
+  padding: 50px 0 25px 0;
+}

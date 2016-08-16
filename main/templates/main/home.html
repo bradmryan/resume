@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'main/home.css' %}" >
+{% endblock %}
+
+{% block body %}
+
+<div class="row" id="banner"><!-- header row -->
+  <div class="container" >
+    <div class="col-md-offset-2 col-md-3 "><!-- image block -->
+      <img src="{{ resume.picture.url }}" alt="{{ resume.get_full_name }}" class="img-circle">
+    </div><!-- image block -->
+    <div class="col-md-offset-1 col-md-4">
+      <h1>{{ resume.get_full_name }}</h1>
+      <h2>{{ resume.label }}</h2>
+      <h4> {{ resume.summary }}</h4>
+    </div>
+  </div>
+</div> <!-- header row -->
+
+<div class="row" id="info-row">
+  <div class="col-md-4" id="left-box">
+    <h2>SKILLS</h2>
+    <span class="glyphicon glyphicon-console"></span>
+  </div>
+  <div class="col-md-4" id="middle-box">
+    <h2>EDUCATION</h2>
+    <span class="glyphicon glyphicon-education"></span>
+  </div>
+  <div class="col-md-4" id="right-box">
+    <h2>SOCIAL MEDIA</h2>
+    <span class="glyphicon glyphicon-user"></span>
+  </div>
+</div>
+
+<div class="row" id="skills-box">
+  <div class="container">
+    <div class="col-md-6">
+      <h1>SKILLS</h1>
+      <h2>Brad Ryan is a computer programmer who codes primarily in Python, and
+        uses the Django framework to build web applications, but is also skill in,
+        and has experience with many other technologies like Java, SQL, PHP, AngularsJS,
+        NodeJS, and Linux. <h2>
+    </div>
+    <div class="col-md-offset-1 col-md-4">
+      <img src="{{ logo.java.image.url }}" >
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
