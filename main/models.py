@@ -41,9 +41,11 @@ class Profile(models.Model):
     username = models.CharField(max_length=150)
     url = models.URLField()
 
-
     class Meta:
         unique_together = ('resume', 'network')
+
+    def __str__(self):
+        return self.network + " " + self.resume.email
 
 class Work(models.Model):
     resume = models.ForeignKey(Resume)
@@ -56,6 +58,8 @@ class Work(models.Model):
     enddate = models.DateField()
     summary = models.TextField()
 
+    def __str__(self):
+        return self.resume.email + " - " + self.company
 
 class WorkHighlight(models.Model):
     work = models.ForeignKey(Work)
@@ -63,7 +67,7 @@ class WorkHighlight(models.Model):
     highlight = models.TextField()
 
     def __str__(self):
-        return self.highlight[:15]
+        return self.highlight[:30] + " - " + self.work.company + " - " + self.work.resume.email
 
 
 class Education(models.Model):
@@ -76,6 +80,8 @@ class Education(models.Model):
     enddate = models.DateField()
     gpa = models.CharField(max_length=3)
 
+    def __str__(self):
+        return self.area + " - " + self.institution + " - " + self.resume.email
 
 class Course(models.Model):
     education = models.ForeignKey(Education)
@@ -83,6 +89,8 @@ class Course(models.Model):
     coursecode = models.CharField(max_length=10)
     description = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.coursecode + " - " + self.education.institution
 
 class Award(models.Model):
     resume = models.ForeignKey(Resume)
@@ -91,6 +99,9 @@ class Award(models.Model):
     date = models.DateField()
     awarder = models.CharField(max_length=100)
     summary = models.TextField()
+
+    def __str__(self):
+        return self.resume.email + " - " + self.title + " - " + self.awarder
 
 
 class Publication(models.Model):
@@ -102,12 +113,18 @@ class Publication(models.Model):
     website = models.URLField()
     summary = models.TextField()
 
+    def __str__(self):
+        return self.resume.email + " - " + self.name + " - " + self.publisher
+
 
 class Skill(models.Model):
     resume = models.ForeignKey(Resume)
 
     name = models.CharField(max_length=150)
     level = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.resume.email + " - " + self.name
 
 
 class Keyword(models.Model):
@@ -124,6 +141,9 @@ class SkillKeyword(models.Model):
     class Meta:
         unique_together = ('skill', 'keyword')
 
+    def __str__(self):
+        return self.skill.resume.email + " - " + self.skill.name + " - " + self.keyword.word
+
 
 class Language(models.Model):
     resume = models.ForeignKey(Resume)
@@ -131,13 +151,16 @@ class Language(models.Model):
     name = models.CharField(max_length=25)
     level = models.CharField(max_length=25)
 
-
+    def __str__(self):
+        return self.resume.email + " - " + self.name
 
 class Interest(models.Model):
     resume = models.ForeignKey(Resume)
 
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.resume.email + " - " + self.name
 
 class InterestKeyword(models.Model):
     interest = models.ForeignKey(Interest)
