@@ -15,7 +15,7 @@
     <div class="col-md-offset-1 col-md-4">
       <h1>{{ resume.get_full_name }}</h1>
       <h2>{{ resume.label }}</h2>
-      <h4> {{ resume.summary }}</h4>
+      <h4>{{ resume.summary }}</h4>
       <a class="btn btn-default" href="{% url 'get-resume-json' %}" role="button">Get Resume.json</a>
       <a class="btn btn-default" href="{% url 'get-resume-pdf' %}" role="button">Get Resume.pdf</a>
     </div>

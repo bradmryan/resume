@@ -2,12 +2,72 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+      p {
+        font-size: 12px;
+        padding: 0 0 0 0;
+      }
+    </style>
   </head>
   <body>
     <div>
-      <h1>{{ name }}</h1>
-      next line
-      <p> next line</p>
+      <h1>{{ basics.name }}</h1><hr>
+      <p>{{ basics.location.city }}, {{ basics.location.region}}</p>
+      <p>{{ basics.email }}</p>
+      <p>{{ basics.phone }}</p>
+      <p>{{ basics.website }}</p>
+      <strong>Summary</strong><hr>
+      <p>{{ basics.summary }}</p>
+      <strong>Education</strong><hr>
+      {% for edu in education %}
+        <p>{{ edu.institution }}</p>
+        <p>{{ edu.studyType }} in {{ edu.area }}</p>
+        <p>{{ edu.startDate }} - {{ edu.endDate}}</p>
+      {% endfor %}
+      <strong>Work History</strong><hr>
+      {% for job in work %}
+        <p>{{ job.position }}</p>
+        <p>{{ job.company }}</p>
+        <p>{{ job.summary }}</p>
+        <p>{{ job.startDate }} - {{ job.endDate }}</p>
+        <br>
+      {% endfor %}
+      {% if volunteer %}<strong>Volunteer History</strong><hr>{% endif %}
+      {% for job in volunteer %}
+        <p>{{ job.position }}</p>
+        <p>{{ job.organization }}</p>
+        <p>{{ job.summary }}</p>
+        <p>{{ job.startDate }} - {{ job.endDate }}</p>
+        <br>
+      {% endfor %}
+      {% if skills %}<strong>Skills</strong><hr>{% endif %}
+      {% for skill in skills %}
+        <p>{{ skill.name }}</p>
+        <ul>
+          {% for keyword in skill.keywords %}
+            <li>{{ keyword.keyword }}</li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+      {% if interests %}<strong>Interests</strong><hr>{% endif %}
+      {% for interest in interests %}
+        <p>{{ interest.name }}</p>
+        <ul>
+          {% for keyword in interest.keyword %}
+            <li>{{ keyword.keyword }}</li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+      <strong>References</strong><hr>
+      {% for reference in references %}
+        {{ reference.name }}
+        {{ reference.reference }}
+        <br>
+      {% endfor %}
     </div>
   </body>
 </html>
