@@ -9,20 +9,9 @@ from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Awa
 # Create your views here.
 def home(req):
     context = {}
-    context["logo"] = {}
     email = "brad.m.ryan@gmail.com"
     context["resume"] = get_object_or_404(Resume, email=email)
-    context["logo"]["java"] = get_object_or_404(LogoImage, name="Java")
-    context["logo"]["python"] = get_object_or_404(LogoImage, name="Python")
-    context["logo"]["django"] = get_object_or_404(LogoImage, name="Django")
-    context["logo"]["javascript"] = get_object_or_404(LogoImage, name="Javascript")
-    context["logo"]["html5"] = get_object_or_404(LogoImage, name="HTML5")
-    context["logo"]["android"] = get_object_or_404(LogoImage, name="Android")
-    context["logo"]["angularjs"] = get_object_or_404(LogoImage, name="AngularJS")
-    context["logo"]["nodejs"] = get_object_or_404(LogoImage, name="NodeJS")
-    context["logo"]["linux"] = get_object_or_404(LogoImage, name="Linux")
-    context["logo"]["php"] = get_object_or_404(LogoImage, name="PHP")
-    context["logo"]["lambtoncollege"] = get_object_or_404(LogoImage, name="LambtonCollege")
+
     return render(req, 'main/home.html', context)
 
 
