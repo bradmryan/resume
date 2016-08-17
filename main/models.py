@@ -169,12 +169,17 @@ class InterestKeyword(models.Model):
     class Meta:
         unique_together = ('interest', 'keyword')
 
+    def __str__(self):
+        return self.interest.resume.email + " - " + self.interest.name + " - " + self.keyword.word
 
 class Reference(models.Model):
     resume = models.ForeignKey(Resume)
 
     name = models.CharField(max_length=150)
     reference = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.resume.email + " - " + self.name
 
 class LogoImage(models.Model):
     name = models.CharField(max_length=50, unique=True)
