@@ -1,7 +1,12 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.template.loader import get_template
+from django.template import RequestContext
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.conf import settings
+
+import weasyprint
 
 from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, Keyword, SkillKeyword, InterestKeyword, LogoImage
 
@@ -133,3 +138,19 @@ def get_resume_json(req):
     resume_dict["references"] = reference_rec
 
     return JsonResponse(resume_dict)
+
+
+def get_resume_pdf(req):
+    context = {}
+    resume = get_object_or_404(Resume, email="brad.m.ryan@gmail.com")
+    template = get_template('main/resume.html')
+
+    full_name = " ".join([resume.firstname, resume.middleinitial, resume.lastname])
+
+    context["name"] = full_name
+
+    html = template.render(RequestContext(req, context))
+    pdf = weasyprint.HTML(string=html).write_pdf()
+    res = HttpResponse(pdf, content_type="application/pdf")
+
+    return res

@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name="home"),
     url(r'^resume.json', views.get_resume_json, name="get-resume-json"),
+    url(r'^resume.pdf', views.get_resume_pdf, name="get-resume-pdf"),
 ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
