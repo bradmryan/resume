@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'resume.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': '',
-        'NAME': ''),
+        'NAME': '',
     }
 }
 
