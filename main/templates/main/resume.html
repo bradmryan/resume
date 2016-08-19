@@ -35,14 +35,12 @@
         {{ job.company }}<br>
         {{ job.summary }}<br>
         {{ job.startDate }} - {{ job.endDate }}</p>
-        <br>
       {% endfor %}
       {% if volunteer %}<strong>Volunteer History</strong><hr>{% endif %}
       {% for job in volunteer %}
         <p>{{ job.position }} at {{ job.organization }}<br>
         {{ job.summary }}<br>
         {{ job.startDate }} - {{ job.endDate }}</p>
-        <br>
       {% endfor %}
       {% if skills %}<strong>Skills</strong><hr>
       {% for skill in skills %}
@@ -63,11 +61,7 @@
         </ul>
       {% endfor %}
       <strong>References</strong><hr>
-      {% for reference in references %}
-        {{ reference.name }}
-        {{ reference.reference }}
-        <br>
-      {% endfor %}
+      <p>For privacy reasons, references are available only on request</p>
     </div>
   </body>
 </html>
