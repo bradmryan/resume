@@ -38,8 +38,8 @@ def get_resume_json(req):
     reference_rec = []
 
     profiles = Profile.objects.filter(resume=resume)
-    works = Work.objects.filter(resume=resume).order_by('-startDate')
-    education = Education.objects.filter(resume=resume).order_by('-startDate')
+    works = Work.objects.filter(resume=resume).order_by('-startdate')
+    education = Education.objects.filter(resume=resume).order_by('-startdate')
     awards = Award.objects.filter(resume=resume)
     publications = Publication.objects.filter(resume=resume)
     skills = Skill.objects.filter(resume=resume)
@@ -159,8 +159,8 @@ def get_resume_pdf(req):
     reference_rec = []
 
     profiles = Profile.objects.filter(resume=resume)
-    works = Work.objects.filter(resume=resume)
-    education = Education.objects.filter(resume=resume)
+    works = Work.objects.filter(resume=resume).order_by('-startdate')
+    education = Education.objects.filter(resume=resume).order_by('-startdate')
     awards = Award.objects.filter(resume=resume)
     publications = Publication.objects.filter(resume=resume)
     skills = Skill.objects.filter(resume=resume)
