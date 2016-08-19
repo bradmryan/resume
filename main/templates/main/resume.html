@@ -40,12 +40,16 @@
       {% if skills %}<strong>Skills</strong><hr>
         <div class="indent">
           {% for skill in skills %}
-            <p>{{ skill.name }}</p>
-            <ul>
+            <p>
+              {{ skill.name }}:
               {% for keyword in skill.keywords %}
-                <li>{{ keyword.keyword }}</li>
+                {% if forloop.last %}
+                  <i>{{ keyword.word }}</i>
+                {% else %}
+                  <i>{{ keyword.word }}, </i>
+                {% endif %}
               {% endfor %}
-            </ul>
+            </p>
           {% endfor %}
         </div>
       {% endif %}
