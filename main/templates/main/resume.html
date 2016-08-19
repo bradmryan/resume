@@ -11,55 +11,74 @@
         font-size: 12px;
         padding: 0 0 0 0;
       }
+      .indent {
+        padding-left: 25px;
+      }
     </style>
   </head>
   <body>
     <div>
       <h1>{{ basics.name }}</h1><hr>
-      <p>{{ basics.location.city }}, {{ basics.location.region}}</p>
-      <p>{{ basics.email }}</p>
-      <p>{{ basics.phone }}</p>
-      <p>{{ basics.website }}</p>
+      <div class="indent">
+        <p>{{ basics.location.city }}, {{ basics.location.region}}</p>
+        <p>{{ basics.email }}</p>
+        <p>{{ basics.phone }}</p>
+        <p>{{ basics.website }}</p>
+      </div>
       <strong>Summary</strong><hr>
-      <p>{{ basics.summary }}</p>
+      <div class="indent">
+        <p>{{ basics.summary }}</p>
+      </div>
       <strong>Education</strong><hr>
-      {% for edu in education %}
-        <p>{{ edu.institution }}<br>
-        {{ edu.studyType }} in {{ edu.area }}<br>
-        {{ edu.startDate }} - {{ edu.endDate}}</p>
-      {% endfor %}
+      <div class="indent">
+        {% for edu in education %}
+          <p>{{ edu.institution }}<br>
+          {{ edu.studyType }} in {{ edu.area }}<br>
+          {{ edu.startDate }} - {{ edu.endDate}}</p>
+        {% endfor %}
+      </div>
       <strong>Work History</strong><hr>
-      {% for job in work %}
-        <p><strong>{{ job.position }}</strong><br>
-        <i>{{ job.company }}</i><br>
-        {{ job.summary }}<br>
-        {{ job.startDate }} - {{ job.endDate }}</p>
-      {% endfor %}
+      <div class="indent">
+        {% for job in work %}
+          <p><strong>{{ job.position }}</strong><br>
+          <i>{{ job.company }}</i><br>
+          {{ job.summary }}<br>
+          {{ job.startDate }} - {{ job.endDate }}</p>
+        {% endfor %}
+      </div>
       {% if volunteer %}<strong>Volunteer History</strong><hr>{% endif %}
       {% for job in volunteer %}
-        <p><strong>{{ job.position }}</strong>
+      <div class="indent">
+        <p><strong>{{ job.position }}</strong><br>
         <i>{{ job.organization }}</i><br>
         {{ job.summary }}<br>
         {{ job.startDate }} - {{ job.endDate }}</p>
+      </div>
       {% endfor %}
       {% if skills %}<strong>Skills</strong><hr>
-      {% for skill in skills %}
-        <p>{{ skill.name }}</p>
-        <ul>
-          {% for keyword in skill.keywords %}
-            <li>{{ keyword.keyword }}</li>
+        <div class="indent">
+          {% for skill in skills %}
+            <p>{{ skill.name }}</p>
+            <ul>
+              {% for keyword in skill.keywords %}
+                <li>{{ keyword.keyword }}</li>
+              {% endfor %}
+            </ul>
           {% endfor %}
-        </ul>
-      {% endfor %}{% endif %}
-      {% if interests %}<strong>Interests</strong><hr>{% endif %}
-      {% for interest in interests %}
-        <p>{{ interest.name }}</p>
-        <ul>
-          {% for keyword in interest.keyword %}
-            <li>{{ keyword.keyword }}</li>
+        </div>
+      {% endif %}
+      {% if interests %}<strong>Interests</strong><hr>
+        <div class="indent">
+          {% for interest in interests %}
+            <p>{{ interest.name }}</p>
+            <ul>
+              {% for keyword in interest.keyword %}
+                <li>{{ keyword.keyword }}</li>
+              {% endfor %}
+            </ul>
           {% endfor %}
-        </ul>
-      {% endfor %}
+        </div>
+      {% endif %}
       <strong>References</strong><hr>
       <p>For privacy reasons, references are available only on request</p>
     </div>
