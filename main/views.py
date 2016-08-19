@@ -104,7 +104,7 @@ def get_resume_json(req):
         keywords = SkillKeyword.objects.filter(skill=skill)
 
         for keyword in keywords:
-            keyword_rec.append(keyword.keyword)
+            keyword_rec.append(keyword.keyword.word)
 
         skill_dict = {"name": skill.name, "level": skill.level, "keywords": keyword_rec}
         skill_rec.append(skill_dict)
@@ -119,7 +119,7 @@ def get_resume_json(req):
         keywords = InterestKeyword.objects.filter(interest=interest)
 
         for keyword in keywords:
-            keyword_rec.append(keyword.keyword)
+            keyword_rec.append(keyword.keyword.word)
 
         interest_dict = {"name": interest.name, "keyword": keyword_rec}
         interest_rec.append(interest_dict)
@@ -241,7 +241,7 @@ def get_resume_pdf(req):
         keywords = InterestKeyword.objects.filter(interest=interest)
 
         for keyword in keywords:
-            keyword_rec.append(keyword.keyword)
+            keyword_rec.append(keyword.keyword.word)
 
         interest_dict = {"name": interest.name, "keyword": keyword_rec}
         interest_rec.append(interest_dict)
