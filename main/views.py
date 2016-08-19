@@ -167,9 +167,9 @@ def get_resume_pdf(req):
     education = Education.objects.filter(resume=resume).order_by('-startdate')
     awards = Award.objects.filter(resume=resume)
     publications = Publication.objects.filter(resume=resume)
-    skills = Skill.objects.filter(resume=resume)
+    skills = Skill.objects.filter(resume=resume).order_by('name')
     languages = Language.objects.filter(resume=resume)
-    interests = Interest.objects.filter(resume=resume)
+    interests = Interest.objects.filter(resume=resume).order_by('name')
     references = Reference.objects.filter(resume=resume)
 
     name = ' '.join([resume.firstname, resume.middleinitial + '.', resume.lastname])
