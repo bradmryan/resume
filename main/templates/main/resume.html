@@ -24,27 +24,27 @@
       <p>{{ basics.summary }}</p>
       <strong>Education</strong><hr>
       {% for edu in education %}
-        <p>{{ edu.institution }}</p>
-        <p>{{ edu.studyType }} in {{ edu.area }}</p>
-        <p>{{ edu.startDate }} - {{ edu.endDate}}</p>
+        <p>{{ edu.institution }}<br>
+        {{ edu.studyType }}<br>
+        {{ edu.area }}<br>
+        {{ edu.startDate }} - {{ edu.endDate}}</p>
       {% endfor %}
       <strong>Work History</strong><hr>
       {% for job in work %}
-        <p>{{ job.position }}</p>
-        <p>{{ job.company }}</p>
-        <p>{{ job.summary }}</p>
-        <p>{{ job.startDate }} - {{ job.endDate }}</p>
+        <p>{{ job.position }}<br>
+        {{ job.company }}<br>
+        {{ job.summary }}<br>
+        {{ job.startDate }} - {{ job.endDate }}</p>
         <br>
       {% endfor %}
       {% if volunteer %}<strong>Volunteer History</strong><hr>{% endif %}
       {% for job in volunteer %}
-        <p>{{ job.position }}</p>
-        <p>{{ job.organization }}</p>
-        <p>{{ job.summary }}</p>
-        <p>{{ job.startDate }} - {{ job.endDate }}</p>
+        <p>{{ job.position }} at {{ job.organization }}<br>
+        {{ job.summary }}<br>
+        {{ job.startDate }} - {{ job.endDate }}</p>
         <br>
       {% endfor %}
-      {% if skills %}<strong>Skills</strong><hr>{% endif %}
+      {% if skills %}<strong>Skills</strong><hr>
       {% for skill in skills %}
         <p>{{ skill.name }}</p>
         <ul>
@@ -52,7 +52,7 @@
             <li>{{ keyword.keyword }}</li>
           {% endfor %}
         </ul>
-      {% endfor %}
+      {% endfor %}{% endif %}
       {% if interests %}<strong>Interests</strong><hr>{% endif %}
       {% for interest in interests %}
         <p>{{ interest.name }}</p>
