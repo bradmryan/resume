@@ -25,20 +25,20 @@
       <strong>Education</strong><hr>
       {% for edu in education %}
         <p>{{ edu.institution }}<br>
-        {{ edu.studyType }}<br>
-        {{ edu.area }}<br>
+        {{ edu.studyType }} in {{ edu.area }}<br>
         {{ edu.startDate }} - {{ edu.endDate}}</p>
       {% endfor %}
       <strong>Work History</strong><hr>
       {% for job in work %}
-        <p>{{ job.position }}<br>
-        {{ job.company }}<br>
+        <p><strong>{{ job.position }}</strong><br>
+        <i>{{ job.company }}</i><br>
         {{ job.summary }}<br>
         {{ job.startDate }} - {{ job.endDate }}</p>
       {% endfor %}
       {% if volunteer %}<strong>Volunteer History</strong><hr>{% endif %}
       {% for job in volunteer %}
-        <p>{{ job.position }} at {{ job.organization }}<br>
+        <p><strong>{{ job.position }}</strong>
+        <i>{{ job.organization }}</i><br>
         {{ job.summary }}<br>
         {{ job.startDate }} - {{ job.endDate }}</p>
       {% endfor %}
