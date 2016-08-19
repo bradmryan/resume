@@ -37,6 +37,18 @@
           {{ edu.startDate }} - {{ edu.endDate}}</p>
         {% endfor %}
       </div>
+      {% if skills %}<strong>Skills</strong><hr>
+        <div class="indent">
+          {% for skill in skills %}
+            <p>{{ skill.name }}</p>
+            <ul>
+              {% for keyword in skill.keywords %}
+                <li>{{ keyword.keyword }}</li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        </div>
+      {% endif %}
       <strong>Work History</strong><hr>
       <div class="indent">
         {% for job in work %}
@@ -55,18 +67,7 @@
         {{ job.startDate }} - {{ job.endDate }}</p>
       </div>
       {% endfor %}
-      {% if skills %}<strong>Skills</strong><hr>
-        <div class="indent">
-          {% for skill in skills %}
-            <p>{{ skill.name }}</p>
-            <ul>
-              {% for keyword in skill.keywords %}
-                <li>{{ keyword.keyword }}</li>
-              {% endfor %}
-            </ul>
-          {% endfor %}
-        </div>
-      {% endif %}
+
       {% if interests %}<strong>Interests</strong><hr>
         <div class="indent">
           {% for interest in interests %}

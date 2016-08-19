@@ -16,6 +16,10 @@ def home(req):
     context = {}
     email = "brad.m.ryan@gmail.com"
     context["resume"] = get_object_or_404(Resume, email=email)
+    phn = context["resume"].phone
+    phn = "(" + phn[:3] + ") " + phn[3:6] + "-" + phn[6:10]
+
+    context["resume"].phone = phn
 
     return render(req, 'main/home.html', context)
 
@@ -169,6 +173,7 @@ def get_resume_pdf(req):
     references = Reference.objects.filter(resume=resume)
 
     name = ' '.join([resume.firstname, resume.middleinitial + '.', resume.lastname])
+    phone = '(' + resume.phone[:3] + ') ' + resume.phone[3:6] + '-' + resume.phone[6:10]
 
     for profile in profiles:
         network = profile.get_network_display()
@@ -245,7 +250,7 @@ def get_resume_pdf(req):
         reference_dict = {"name": reference.name, "reference": reference.reference}
         reference_rec.append(reference_dict)
 
-    resume_dict["basics"] = { "name": name.title(), "label": resume.label, "picture": resume.picture.url, "email": resume.email, "phone": resume.phone, "website": resume.website, "summary": resume.summary }
+    resume_dict["basics"] = { "name": name.title(), "label": resume.label, "picture": resume.picture.url, "email": resume.email, "phone": phone, "website": resume.website, "summary": resume.summary }
     resume_dict["basics"]["location"] = { "address": resume.address, "postalcode": resume.postalcode, "city": resume.city, "countrycode": resume.countrycode, "region": resume.region }
     resume_dict["basics"]["profiles"] = profile_rec
     resume_dict["volunteer"] = volunteer_rec
