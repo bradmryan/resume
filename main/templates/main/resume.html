@@ -75,17 +75,22 @@
       {% if interests %}<strong>Interests</strong><hr>
         <div class="indent">
           {% for interest in interests %}
-            <p>{{ interest.name }}</p>
-            <ul>
-              {% for keyword in interest.keyword %}
-                <li>{{ keyword }}</li>
+            <p>{{ interest.name }}:
+              {% for keyword in interest.keywords %}
+                {% if forloop.last %}
+                  <i>{{ keyword }}</i>
+                {% else %}
+                  <i>{{ keyword }}, </i>
+                {% endif %}
+              </p>
               {% endfor %}
-            </ul>
           {% endfor %}
         </div>
       {% endif %}
       <strong>References</strong><hr>
-      <p>For privacy reasons, references are available only upon request</p>
+      {% for reference in references %}
+        <p>{{ reference.name }} - <i>{{ reference.reference }}</i></p>
+      {% endfor %}
     </div>
   </body>
 </html>

@@ -127,7 +127,7 @@ def get_resume(email, format_phone=False):
         for keyword in keywords:
             keyword_rec.append(keyword.keyword.word)
 
-        interest_dict = {"name": interest.name, "keyword": keyword_rec}
+        interest_dict = {"name": interest.name, "keywords": keyword_rec}
         interest_rec.append(interest_dict)
 
     for reference in references:
