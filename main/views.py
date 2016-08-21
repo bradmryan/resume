@@ -94,7 +94,7 @@ def get_resume(email, format_phone=False):
 
         edu_dict = {"institution": edu.institution, "area": edu.area, "studyType": edu.studytype, "startDate": edu.startdate, "endDate": edu.enddate, "gpa": edu.gpa}
         edu_dict["courses"] = course_rec
-        work_rec.append(edu_dict)
+        education_rec.append(edu_dict)
 
     for award in awards:
         award_dict = {"title": award.title, "date": award.date, "awarder": award.awarder, "summary": award.summary}
@@ -139,7 +139,7 @@ def get_resume(email, format_phone=False):
     resume_dict["basics"]["profiles"] = profile_rec
     resume_dict["volunteer"] = volunteer_rec
     resume_dict["work"] = work_rec
-    resume_dict["education"] = work_rec
+    resume_dict["education"] = education_rec
     resume_dict["awards"] = award_rec
     resume_dict["publications"] = publication_rec
     resume_dict["skills"] = skill_rec
