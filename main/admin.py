@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, LogoImage, SkillKeyword, Keyword
+from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, LogoImage, SkillKeyword, InterestKeyword, Keyword
 
 REGISTER_MODELS = [
     Resume,
@@ -16,6 +16,7 @@ REGISTER_MODELS = [
     Reference,
     LogoImage,
     SkillKeyword,
+    InterestKeyword,
     Keyword,
 ]
 
