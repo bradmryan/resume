@@ -44,9 +44,9 @@
               {{ skill.name }}:
               {% for keyword in skill.keywords %}
                 {% if forloop.last %}
-                  <i>{{ keyword.word }}</i>
+                  <i>{{ keyword }}</i>
                 {% else %}
-                  <i>{{ keyword.word }}, </i>
+                  <i>{{ keyword }}, </i>
                 {% endif %}
               {% endfor %}
             </p>
