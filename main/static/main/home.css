@@ -26,7 +26,7 @@ h1, h2, h3, h4 {
   text-align: center;
 }
 
-#info-row a {
+#info-row a, #skill-banner a, #edu-banner a, #contact-banner a {
   color: black;
 }
 
@@ -87,4 +87,24 @@ h1, h2, h3, h4 {
   background-color: black;
   padding: 150px 0 150px 0;
   color:white;
+}
+
+#skill-banner {
+  background-color: #F0C05B;
+  height: 15px;
+}
+
+#edu-banner {
+  background-color: #45B5AB;
+  height: 15px;
+}
+
+#contact-banner {
+  background-color: #D94F71;
+  min-height: 15px;
+}
+
+.go-home {
+  float: right;
+  padding-right: 15px;
 }
