@@ -58,6 +58,9 @@ class Work(models.Model):
     enddate = models.DateField()
     summary = models.TextField()
 
+    class Meta:
+        ordering = ['-startdate']
+
     def __str__(self):
         return self.resume.email + " - " + self.company
 
@@ -80,6 +83,9 @@ class Education(models.Model):
     enddate = models.DateField()
     gpa = models.CharField(max_length=3)
 
+    class Meta:
+        ordering = ['-startdate']
+
     def __str__(self):
         return self.area + " - " + self.institution + " - " + self.resume.email
 
@@ -100,6 +106,9 @@ class Award(models.Model):
     awarder = models.CharField(max_length=100)
     summary = models.TextField()
 
+    class Meta:
+        ordering = ['-date']
+
     def __str__(self):
         return self.resume.email + " - " + self.title + " - " + self.awarder
 
@@ -112,6 +121,9 @@ class Publication(models.Model):
     releasedate = models.DateField()
     website = models.URLField()
     summary = models.TextField()
+
+    class Meta:
+        ordering = ['-releasedate']
 
     def __str__(self):
         return self.resume.email + " - " + self.name + " - " + self.publisher

@@ -16,14 +16,38 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 
+from django.contrib.auth.models import User
+from rest_framework import routers, serializers, viewsets
+from rest_framework.decorators import api_view
+
 from main import views
+from main.models import Resume
+
+# Serializers define the API representation.
+class ResumeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Resume
+        fields = ('firstname', 'lastname', 'email', 'label')
+
+# ViewSets define the view behavior.
+class ResumeViewSet(viewsets.ModelViewSet):
+    queryset = Resume.objects.all()
+    serializer_class = ResumeSerializer
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'resumes', ResumeViewSet)
+
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name="home"),
+    url(r'^api/', include('main.urls')),
     url(r'^resume.json', views.get_resume_json, name="get-resume-json"),
     url(r'^resume.pdf', views.get_resume_pdf, name="get-resume-pdf"),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

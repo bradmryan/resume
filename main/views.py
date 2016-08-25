@@ -6,11 +6,14 @@ from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.views.decorators.http import require_GET
+from django.views.decorators.csrf import csrf_exempt
 
 import weasyprint
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
 
 from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, Keyword, SkillKeyword, InterestKeyword, LogoImage
-
+from .serializers import ResumeSerializer
 
 # Create your views here.
 @require_GET
@@ -26,7 +29,7 @@ def home(req):
     return render(req, 'main/home.html', context)
 
 def get_resume(email, format_phone=False):
-    resume = get_object_or_404(Resume, email="brad.m.ryan@gmail.com")
+    resume = get_object_or_404(Resume, email=email)
 
     resumes_dict = {}
     resumes_rec = []
@@ -42,15 +45,15 @@ def get_resume(email, format_phone=False):
     interest_rec = []
     reference_rec = []
 
-    profiles = Profile.objects.filter(resume=resume)
-    works = Work.objects.filter(resume=resume).order_by('-startdate')
-    education = Education.objects.filter(resume=resume).order_by('-startdate')
-    awards = Award.objects.filter(resume=resume)
-    publications = Publication.objects.filter(resume=resume)
-    skills = Skill.objects.filter(resume=resume)
-    languages = Language.objects.filter(resume=resume)
-    interests = Interest.objects.filter(resume=resume)
-    references = Reference.objects.filter(resume=resume)
+    profiles = resume.profile_set.all()
+    works = resume.work_set.all()
+    education = resume.education_set.all()
+    awards = resume.award_set.all()
+    publications = resume.publication_set.all()
+    skills = resume.skill_set.all()
+    languages = resume.language_set.all()
+    interests = resume.interest_set.all()
+    references = resume.reference_set.all()
 
     name = ' '.join([resume.firstname, resume.middleinitial, resume.lastname])
 
@@ -67,7 +70,7 @@ def get_resume(email, format_phone=False):
     for work in works:
         highlight_rec = []
 
-        highlights = WorkHighlight.objects.filter(work=work)
+        highlights = work.workhighlight_set.all()
 
         for highlight in highlights:
             highlight_rec.append(highlight.highlight)
@@ -86,7 +89,7 @@ def get_resume(email, format_phone=False):
     for edu in education:
         course_rec = []
 
-        courses = Course.objects.filter(education=edu)
+        courses = edu.course_set.all()
 
         for course in courses:
             record = " - ".join([course.coursecode, course.description ])
@@ -107,7 +110,7 @@ def get_resume(email, format_phone=False):
     for skill in skills:
         keyword_rec = []
 
-        keywords = SkillKeyword.objects.filter(skill=skill)
+        keywords = skill.skillkeyword_set.all()
 
         for keyword in keywords:
             keyword_rec.append(keyword.keyword.word)
@@ -122,7 +125,7 @@ def get_resume(email, format_phone=False):
     for interest in interests:
         keyword_rec = []
 
-        keywords = InterestKeyword.objects.filter(interest=interest)
+        keywords = interest.interestkeyword_set.all()
 
         for keyword in keywords:
             keyword_rec.append(keyword.keyword.word)
@@ -164,3 +167,53 @@ def get_resume_pdf(req):
     res = HttpResponse(pdf, content_type="application/pdf")
 
     return res
+
+
+#REST
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+@csrf_exempt
+def resume_list(req):
+    if req.method == 'GET':
+        resumes = Resume.objects.all()
+        serializer = ResumeSerializer(resumes, many=True)
+        return JSONResponse(serializer.data)
+
+    elif req.method == 'POST':
+        data = JSONParser().parse(req)
+        serializer = ResumeSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JSONResponse(serializer.data, status=201)
+        return JSONResponse(serializer.errors, status=400)
+
+@csrf_exempt
+def resume_detail(req, email):
+
+    try:
+        resume = Resume.objects.get(email=email)
+    except Resume.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = ResumeSerializer(resume)
+        return JSONResponse(serializer.data)
+
+    elif req.method == 'PUT':
+        data = JSONParser().parse(req)
+        serializer = ResumeSerializer(resume, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JSONResponse(serialzer.data)
+        return JSONResponse(serialzer.errors, status=400)
+
+    elif req.method == 'DELETE':
+        return HttpResponse(status=403)
