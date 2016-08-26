@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 
 import weasyprint
 from rest_framework.parsers import JSONParser
@@ -20,7 +21,7 @@ from .serializers import ResumeSerializer
 def home(req):
     context = {}
     email = "brad.m.ryan@gmail.com"
-    context["resume"] = get_object_or_404(Resume, email=email)
+    context["resume"] = get_object_or_404(Resume, user=get_object_or_404(User, email=email))
     phn = context["resume"].phone
     phn = "(" + phn[:3] + ") " + phn[3:6] + "-" + phn[6:10]
 
@@ -29,7 +30,7 @@ def home(req):
     return render(req, 'main/home.html', context)
 
 def get_resume(email, format_phone=False):
-    resume = get_object_or_404(Resume, email=email)
+    resume = get_object_or_404(Resume, user=get_object_or_404(User, email=email))
 
     resumes_dict = {}
     resumes_rec = []
@@ -137,7 +138,7 @@ def get_resume(email, format_phone=False):
         reference_dict = {"name": reference.name, "reference": reference.reference}
         reference_rec.append(reference_dict)
 
-    resume_dict["basics"] = { "name": name.title(), "label": resume.label, "picture": resume.picture.url, "email": resume.email, "phone": phone, "website": resume.website, "summary": resume.summary }
+    resume_dict["basics"] = { "name": name.title(), "label": resume.label, "picture": resume.picture.url, "email": resume.user.email, "phone": phone, "website": resume.website, "summary": resume.summary }
     resume_dict["basics"]["location"] = { "address": resume.address, "postalcode": resume.postalcode, "city": resume.city, "countrycode": resume.countrycode, "region": resume.region }
     resume_dict["basics"]["profiles"] = profile_rec
     resume_dict["volunteer"] = volunteer_rec
@@ -188,12 +189,7 @@ def resume_list(req):
         return JSONResponse(serializer.data)
 
     elif req.method == 'POST':
-        data = JSONParser().parse(req)
-        serializer = ResumeSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONResponse(serializer.data, status=201)
-        return JSONResponse(serializer.errors, status=400)
+        return HttpResponse(status=403)
 
 @csrf_exempt
 def resume_detail(req, email):
@@ -208,12 +204,7 @@ def resume_detail(req, email):
         return JSONResponse(serializer.data)
 
     elif req.method == 'PUT':
-        data = JSONParser().parse(req)
-        serializer = ResumeSerializer(resume, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONResponse(serialzer.data)
-        return JSONResponse(serialzer.errors, status=400)
+        return HttpResponse(status=403)
 
     elif req.method == 'DELETE':
         return HttpResponse(status=403)

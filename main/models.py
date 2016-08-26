@@ -1,14 +1,15 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Resume(models.Model):
+    user = models.OneToOneField(User)
     firstname = models.CharField(max_length=255)
     middleinitial = models.CharField(max_length=5)
     lastname = models.CharField(max_length=255)
     label = models.CharField(max_length=255)
     picture = models.ImageField(upload_to='images/', max_length=50)
-    email = models.EmailField(unique=True)
     phone = models.CharField(max_length=14)
     website = models.URLField()
     summary = models.TextField()
