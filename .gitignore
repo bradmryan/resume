@@ -5,3 +5,4 @@ resume/dev.py
 *.pyc
 *.sqlite3
 db.sqlite3
+resume/secrets.py
