@@ -25,7 +25,9 @@ ALLOWED_HOSTS = ['www.bradmryan.com']
 SITE_ID = 1
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
+    'registration',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
