@@ -18,11 +18,11 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = os.environ['DEBUG']
+DEBUG = False
 
 ALLOWED_HOSTS = ['www.bradmryan.com']
 
-SITE_ID = 1
+
 
 INSTALLED_APPS = [
     'django.contrib.sites',
@@ -103,6 +103,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+SITE_ID = 1
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
