@@ -13,7 +13,8 @@ import weasyprint
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 
-from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, Keyword, SkillKeyword, InterestKeyword, LogoImage
+from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, Keyword, SkillKeyword, InterestKeyword, Image
+from main import forms
 from .serializers import ResumeSerializer
 
 # Create your views here.
@@ -169,9 +170,27 @@ def get_resume_pdf(req):
 
     return res
 
+#FORM VIEWS
+def resume_form(req):
+    resume = forms.ResumeForm()
+    resume.profile = forms.ProfileForm()
+    resume.work = forms.WorkForm()
+    resume.workhighlight = forms.WorkHighlightForm()
+    resume.education = forms.EducationForm()
+    resume.course = forms.CourseForm()
+    resume.award = forms.AwardForm()
+    resume.publication = forms.PublicationForm()
+    resume.skill = forms.SkillForm()
+    resume.skillkeyworkd = forms.KeywordForm()
+    resume.language = forms.LanguageForm()
+    resume.interest = forms.InterestForm()
+    resume.interestkeyword = forms.KeywordForm()
+    resume.reference = forms.ReferenceForm()
+    context = {'form': resume}
+    return render(req, 'main/resume_form.html', context)
+
 
 #REST
-
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.

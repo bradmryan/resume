@@ -20,7 +20,7 @@ class Resume(models.Model):
     region = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.email
+        return self.user.email
 
     def get_full_name(self):
         return ' '.join([self.firstname, self.middleinitial, self.lastname]).title()
@@ -63,7 +63,7 @@ class Work(models.Model):
         ordering = ['-startdate']
 
     def __str__(self):
-        return self.resume.email + " - " + self.company
+        return self.resume.user.email + " - " + self.company
 
 class WorkHighlight(models.Model):
     work = models.ForeignKey(Work)
@@ -88,7 +88,7 @@ class Education(models.Model):
         ordering = ['-startdate']
 
     def __str__(self):
-        return self.area + " - " + self.institution + " - " + self.resume.email
+        return self.area + " - " + self.institution + " - " + self.resume.user.email
 
 class Course(models.Model):
     education = models.ForeignKey(Education)
@@ -194,10 +194,10 @@ class Reference(models.Model):
     def __str__(self):
         return self.resume.email + " - " + self.name
 
-class LogoImage(models.Model):
+class Image(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    image = models.ImageField(upload_to='images/logos/', max_length=50)
-    alt_image = models.ImageField(upload_to='images/logos/', max_length=50, null=True, blank=True)
+    image = models.URLField()
+    alt_image = models.URLField(null=True, blank=True)
     attribution = models.TextField(blank=True)
 
     def __str__(self):
