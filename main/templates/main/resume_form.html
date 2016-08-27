@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'main/forms.css' %}" >
+  <title>Resume Form</title>
+{% endblock %}
+
+{% block body %}
+  <div class="row" id="form-menu">
+    <a id="basic"><div class="col-md-offset-1 col-md-1">
+      Basics
+    </div></a>
+    <a id="profile"><div class="col-md-1">
+      Profiles
+    </div></a>
+    <a id="work"><div class="col-md-1">
+      Work
+    </div></a>
+    <a id="education"><div class="col-md-1">
+      Education
+    </div></a>
+    <a id="award"><div class="col-md-1">
+      Awards
+    </div></a>
+    <a id="publication"><div class="col-md-1">
+      Publications
+    </div></a>
+    <a id="skill"><div class="col-md-1">
+      Skills
+    </div></a>
+    <a id="language"><div class="col-md-1">
+      Languages
+    </div></a>
+    <a id="interest"><div class="col-md-1">
+      Interests
+    </div></a>
+    <a id="reference"><div class="col-md-1">
+      Refrences
+    </div></a>
+  </div>
+  <div class="container">
+    <div id="basic-form">
+      {{ form|crispy }}
+    </div>
+    <div id="profile-form" hidden>
+      {{ form.profile|crispy }}
+    </div>
+    <div id="work-form" hidden>
+      {{ form.work|crispy }}
+      {{ form.workhighlight|crispy }}
+    </div>
+    <div id="education-form" hidden>
+      {{ form.education|crispy }}
+      {{ form.course|crispy }}
+    </div>
+    <div id="award-form" hidden>
+      {{ form.award|crispy }}
+    </div>
+    <div id="publication-form" hidden>
+      {{ form.publication|crispy }}
+    </div>
+    <div id="skill-form" hidden>
+      {{ form.skill|crispy }}
+      {{ form.skillkeyworkd|crispy }}
+    </div>
+    <div id="language-form" hidden>
+      {{ form.language|crispy }}
+    </div>
+    <div id="interest-form" hidden>
+      {{ form.interest|crispy }}
+      {{ form.interestkeyword|crispy }}
+    </div>
+    <div id="reference-form" hidden>
+      {{ form.reference|crispy }}
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script>
+    var current = "#basic-form";
+
+    $(document).ready(function(){
+      $("a").on('click', function(event){
+        var select = "#" + this.id + "-form";
+
+        $(current).hide();
+        $(select).show();
+
+        current = select;
+
+      });
+    });
+  </script>
+{% endblock %}

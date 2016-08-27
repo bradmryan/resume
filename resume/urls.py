@@ -46,6 +46,7 @@ router.register(r'resumes', ResumeViewSet)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name="home"),
+    url(r'^form/', views.resume_form, name="resume_form"),
     url(r'^api/', include('main.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^resume.json', views.get_resume_json, name="get-resume-json"),

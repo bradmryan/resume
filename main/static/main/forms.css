@@ -1,0 +1,62 @@
+#form-menu {
+  background-color: black;
+  margin-bottom: 50px;
+}
+
+#form-menu a {
+  color: black;
+  text-align: center;
+}
+
+#form-menu a div {
+  padding: 15px 0;
+}
+#basic div {
+  height: 100%;
+  background-color: #92A8D2;
+}
+
+#profile div {
+  height: 100%;
+  background-color: #F0C05B;
+}
+
+#work div {
+  height: 100%;
+  background-color: #45B5AB;
+}
+
+#education div {
+  height: 100%;
+  background-color: #D94F71;
+}
+
+#award div {
+  height: 100%;
+  background-color: #92A8D2;
+}
+
+#publication div {
+  height: 100%;
+  background-color: #F0C05B;
+}
+
+#skill div {
+  height: 100%;
+  background-color: #45B5AB;
+}
+
+#language div {
+  height: 100%;
+  background-color: #D94F71;
+}
+
+#interest div {
+  height: 100%;
+  background-color: #92A8D2;
+}
+
+#reference div {
+  height: 100%;
+  background-color: #F0C05B;
+}
