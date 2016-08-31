@@ -46,7 +46,7 @@ class Profile(models.Model):
         unique_together = ('resume', 'network')
 
     def __str__(self):
-        return self.network + " " + self.resume.email
+        return self.network + " " + self.resume.user.email
 
 class Work(models.Model):
     resume = models.ForeignKey(Resume)
@@ -55,12 +55,12 @@ class Work(models.Model):
     company = models.CharField(max_length=100)
     position = models.CharField(max_length=100)
     website = models.URLField()
-    startdate = models.DateField()
-    enddate = models.DateField()
+    startDate = models.DateField()
+    endDate = models.DateField()
     summary = models.TextField()
 
     class Meta:
-        ordering = ['-startdate']
+        ordering = ['-startDate']
 
     def __str__(self):
         return self.resume.user.email + " - " + self.company
@@ -71,7 +71,7 @@ class WorkHighlight(models.Model):
     highlight = models.TextField()
 
     def __str__(self):
-        return self.highlight[:30] + " - " + self.work.company + " - " + self.work.resume.email
+        return self.highlight[:30] + " - " + self.work.company + " - " + self.work.resume.user.email
 
 
 class Education(models.Model):
@@ -79,13 +79,13 @@ class Education(models.Model):
 
     institution = models.CharField(max_length=150)
     area = models.CharField(max_length=100)
-    studytype = models.CharField(max_length=50)
-    startdate = models.DateField()
-    enddate = models.DateField()
+    studyType = models.CharField(max_length=50)
+    startDate = models.DateField()
+    endDate = models.DateField()
     gpa = models.CharField(max_length=3)
 
     class Meta:
-        ordering = ['-startdate']
+        ordering = ['-startDate']
 
     def __str__(self):
         return self.area + " - " + self.institution + " - " + self.resume.user.email
@@ -119,12 +119,12 @@ class Publication(models.Model):
 
     name = models.CharField(max_length=150)
     publisher = models.CharField(max_length=150)
-    releasedate = models.DateField()
+    releaseDate = models.DateField()
     website = models.URLField()
     summary = models.TextField()
 
     class Meta:
-        ordering = ['-releasedate']
+        ordering = ['-releaseDate']
 
     def __str__(self):
         return self.resume.email + " - " + self.name + " - " + self.publisher

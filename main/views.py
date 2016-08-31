@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 import weasyprint
@@ -15,7 +16,8 @@ from rest_framework.renderers import JSONRenderer
 
 from .models import Resume, Profile, Work, WorkHighlight, Education, Course, Award, Publication, Skill, Language, Interest, Reference, Keyword, SkillKeyword, InterestKeyword, Image
 from main import forms
-from .serializers import ResumeSerializer
+from django.forms import modelformset_factory
+from .serializers import ResumeSerializer, BasicSerializer, ProfileSerializer, WorkSerializer, VolunteerSerializer, EducationSerializer, AwardSerializer, PublicationSerializer, SkillSerializer, LanguageSerializer, InterestSerializer, ReferenceSerializer
 
 # Create your views here.
 @require_GET
@@ -77,7 +79,7 @@ def get_resume(email, format_phone=False):
         for highlight in highlights:
             highlight_rec.append(highlight.highlight)
 
-        work_dict = {"position": work.position, "website": work.website, "startDate": work.startdate, "endDate": work.enddate, "summary": work.summary}
+        work_dict = {"position": work.position, "website": work.website, "startDate": work.startDate, "endDate": work.endDate, "summary": work.summary}
 
         work_dict["highlights"] = highlight_rec
 
@@ -97,7 +99,7 @@ def get_resume(email, format_phone=False):
             record = " - ".join([course.coursecode, course.description ])
             course_rec.append(record)
 
-        edu_dict = {"institution": edu.institution, "area": edu.area, "studyType": edu.studytype, "startDate": edu.startdate, "endDate": edu.enddate, "gpa": edu.gpa}
+        edu_dict = {"institution": edu.institution, "area": edu.area, "studyType": edu.studyType, "startDate": edu.startDate, "endDate": edu.endDate, "gpa": edu.gpa}
         edu_dict["courses"] = course_rec
         education_rec.append(edu_dict)
 
@@ -106,7 +108,7 @@ def get_resume(email, format_phone=False):
         award_rec.append(award_dict)
 
     for publication in publications:
-        publication_dict = {"name": publication.name, "publisher": publication.publisher, "releaseDate": publication.releasedate, "website": publication.website, "summary": publication.summary}
+        publication_dict = {"name": publication.name, "publisher": publication.publisher, "releaseDate": publication.releaseDate, "website": publication.website, "summary": publication.summary}
         publication_rec.append(publication_dict)
 
     for skill in skills:
@@ -171,26 +173,71 @@ def get_resume_pdf(req):
     return res
 
 #FORM VIEWS
+@login_required
 def resume_form(req):
-    resume = forms.ResumeForm()
-    resume.profile = forms.ProfileForm()
-    resume.work = forms.WorkForm()
-    resume.workhighlight = forms.WorkHighlightForm()
-    resume.education = forms.EducationForm()
-    resume.course = forms.CourseForm()
-    resume.award = forms.AwardForm()
-    resume.publication = forms.PublicationForm()
-    resume.skill = forms.SkillForm()
-    resume.skillkeyworkd = forms.KeywordForm()
-    resume.language = forms.LanguageForm()
-    resume.interest = forms.InterestForm()
-    resume.interestkeyword = forms.KeywordForm()
-    resume.reference = forms.ReferenceForm()
-    context = {'form': resume}
+
+    resume = get_object_or_404(Resume, user=req.user)
+    form = forms.ResumeForm(instance=resume)
+
+    form.profile = modelformset_factory(
+        Profile,
+        exclude=('resume',)
+        )
+    form.profile(queryset=Profile.objects.filter(resume=resume))
+
+    form.work = modelformset_factory(
+        Work,
+        exclude=('resume',)
+        )
+    form.work(queryset=Work.objects.filter(resume=resume))
+
+    form.education = modelformset_factory(
+        Education,
+        exclude=('resume',)
+        )
+    form.education(queryset=Education.objects.filter(resume=resume))
+
+    form.award = modelformset_factory(
+        Award,
+        exclude=('resume',)
+        )
+    form.award(queryset=Award.objects.filter(resume=resume))
+
+    form.publication = modelformset_factory(
+        Publication,
+        exclude=('resume',)
+        )
+    form.publication(queryset=Publication.objects.filter(resume=resume))
+
+    form.skill = modelformset_factory(
+        Skill,
+        exclude=('resume',)
+        )
+    form.skill(queryset=Skill.objects.filter(resume=resume))
+
+    form.language = modelformset_factory(
+        Language,
+        exclude=('resume',)
+        )
+    form.language(queryset=Language.objects.filter(resume=resume))
+
+    form.interest = modelformset_factory(
+        Interest,
+        exclude=('resume',)
+        )
+    form.interest(queryset=Interest.objects.filter(resume=resume))
+
+    form.reference = modelformset_factory(
+        Reference,
+        exclude=('resume',)
+        )
+    form.reference(queryset=Reference.objects.filter(resume=resume))
+
+    context = {'form': form}
     return render(req, 'main/resume_form.html', context)
 
 
-#REST
+#----------------------------------REST-----------------------------------------
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -199,6 +246,7 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
+
 
 @csrf_exempt
 def resume_list(req):
@@ -210,11 +258,12 @@ def resume_list(req):
     elif req.method == 'POST':
         return HttpResponse(status=403)
 
+
 @csrf_exempt
 def resume_detail(req, email):
 
     try:
-        resume = Resume.objects.get(email=email)
+        resume = Resume.objects.get(user=User.objects.get(email=email))
     except Resume.DoesNotExist:
         return HttpResponse(status=404)
 
@@ -226,4 +275,178 @@ def resume_detail(req, email):
         return HttpResponse(status=403)
 
     elif req.method == 'DELETE':
+        return HttpResponse(status=403)
+
+
+@csrf_exempt
+def basic_detail(req, email):
+
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    if req.method == 'GET':
+        serializer = BasicSerializer(resume)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+
+@csrf_exempt
+def profile_list(req, email):
+    try:
+        resume = Resume.objects.get(user=User.objects.get(email=email))
+        profiles = Profile.objects.filter(resume=resume)
+    except Profile.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = ProfileSerializer(profiles, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+
+@csrf_exempt
+def work_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+    try:
+        works = Work.objects.filter(resume=resume, volunteer=False)
+    except Work.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = WorkSerializer(works, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+
+@csrf_exempt
+def volunteer_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+    try:
+        works = Work.objects.filter(resume=resume, volunteer=True)
+    except Work.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = VolunteerSerializer(works, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+@csrf_exempt
+def education_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    try:
+        education = Education.objects.filter(resume=resume)
+    except Education.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = EducationSerializer(education, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+@csrf_exempt
+def awards_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    try:
+        awards = Award.objects.filter(resume=resume)
+    except Award.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = AwardSerializer(awards, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+@csrf_exempt
+def publications_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    try:
+        publications = Publication.objects.filter(resume=resume)
+    except Publication.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = PublicationSerializer(publications, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+@csrf_exempt
+def skills_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    try:
+        skills = Skill.objects.filter(resume=resume)
+    except Skill.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = SkillSerializer(skills, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+@csrf_exempt
+def languages_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    try:
+        languages = Language.objects.filter(resume=resume)
+    except Language.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = LanguageSerializer(languages, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+
+@csrf_exempt
+def interests_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    try:
+        interests = Interest.objects.filter(resume=resume)
+    except Interest.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = InterestSerializer(interests, many=True)
+        return JSONResponse(serializer.data)
+    else:
+        return HttpResponse(status=403)
+
+
+@csrf_exempt
+def references_list(req, email):
+    user = get_object_or_404(User, email=email)
+    resume = get_object_or_404(Resume, user=user)
+
+    try:
+        references = Reference.objects.filter(resume=resume)
+    except Reference.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if req.method == 'GET':
+        serializer = ReferenceSerializer(references, many=True)
+        return JSONResponse(serializer.data)
+    else:
         return HttpResponse(status=403)

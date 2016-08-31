@@ -9,7 +9,10 @@
 
 {% block body %}
   <div class="row" id="form-menu">
-    <a id="basic"><div class="col-md-offset-1 col-md-1">
+    <a href="#"><div class="col-md-1">
+      Home
+    </div></a>
+    <a id="basic"><div class="col-md-1">
       Basics
     </div></a>
     <a id="profile"><div class="col-md-1">
@@ -38,6 +41,9 @@
     </div></a>
     <a id="reference"><div class="col-md-1">
       Refrences
+    </div></a>
+    <a href="{% url 'account_logout' %}" style="color:white;"><div class="col-md-1">
+      Logout
     </div></a>
   </div>
   <div class="container">

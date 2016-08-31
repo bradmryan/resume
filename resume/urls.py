@@ -22,6 +22,8 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from rest_framework.decorators import api_view
+from django.contrib.auth import views as auth_views
+
 
 from main import views
 from main.models import Resume
@@ -49,6 +51,7 @@ urlpatterns = [
     url(r'^form/', views.resume_form, name="resume_form"),
     url(r'^api/', include('main.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/logout/$', auth_views.logout, name="account_logout"),
     url(r'^resume.json', views.get_resume_json, name="get-resume-json"),
     url(r'^resume.pdf', views.get_resume_pdf, name="get-resume-pdf"),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
